@@ -1,68 +1,94 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 export default function CustomCursor() {
-  const cursorX = useMotionValue(-100);
-  const cursorY = useMotionValue(-100);
-  const dotX    = useMotionValue(-100);
-  const dotY    = useMotionValue(-100);
+  const mouseX = useMotionValue(-100);
+  const mouseY = useMotionValue(-100);
+  const [hovered, setHovered] = useState(false);
 
-  const springX = useSpring(cursorX, { damping: 25, stiffness: 300 });
-  const springY = useSpring(cursorY, { damping: 25, stiffness: 300 });
-
-  const hovering = useRef(false);
+  // Ring follows with spring lag
+  const ringX = useSpring(mouseX, { damping: 28, stiffness: 220, mass: 0.5 });
+  const ringY = useSpring(mouseY, { damping: 28, stiffness: 220, mass: 0.5 });
 
   useEffect(() => {
+    // Skip on touch devices
     if (window.matchMedia('(hover: none)').matches) return;
 
-    const move = (e: MouseEvent) => {
-      cursorX.set(e.clientX);
-      cursorY.set(e.clientY);
-      dotX.set(e.clientX);
-      dotY.set(e.clientY);
+    const onMove = (e: MouseEvent) => {
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
     };
 
-    const over = (e: MouseEvent) => {
+    const onOver = (e: MouseEvent) => {
       const el = e.target as HTMLElement;
-      hovering.current = !!(el.closest('a, button, [role="button"], input, textarea, select, label'));
+      setHovered(!!el.closest('a, button, [role="button"], input, textarea, select, label'));
     };
 
-    window.addEventListener('mousemove', move);
-    window.addEventListener('mouseover', over);
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseover', onOver);
     return () => {
-      window.removeEventListener('mousemove', move);
-      window.removeEventListener('mouseover', over);
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseover', onOver);
     };
   }, []);
 
   return (
     <>
-      {/* Ring */}
+      {/* Outer ring — spring-lagged, centered via CSS transform */}
       <motion.div
-        style={{ x: springX, y: springY, translateX: '-50%', translateY: '-50%' }}
-        className="fixed top-0 left-0 pointer-events-none z-[9998] mix-blend-difference"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          x: ringX,
+          y: ringY,
+          pointerEvents: 'none',
+          zIndex: 9998,
+          translateX: '-50%',
+          translateY: '-50%',
+        }}
       >
         <motion.div
-          animate={{ scale: hovering.current ? 1.8 : 1 }}
-          transition={{ type: 'spring', damping: 20 }}
+          animate={{
+            scale: hovered ? 1.7 : 1,
+            borderColor: hovered
+              ? 'rgba(192,132,252,0.9)'
+              : 'rgba(129,140,248,0.7)',
+          }}
+          transition={{ type: 'spring', damping: 20, stiffness: 300 }}
           style={{
-            width: 32, height: 32,
+            width: 32,
+            height: 32,
             borderRadius: '50%',
-            border: '1.5px solid rgba(129,140,248,0.8)',
+            border: '1.5px solid rgba(129,140,248,0.7)',
           }}
         />
       </motion.div>
 
-      {/* Dot */}
+      {/* Inner dot — instant, no lag, centered via CSS transform */}
       <motion.div
-        style={{ x: dotX, y: dotY, translateX: '-50%', translateY: '-50%' }}
-        className="fixed top-0 left-0 pointer-events-none z-[9999]"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          x: mouseX,
+          y: mouseY,
+          pointerEvents: 'none',
+          zIndex: 9999,
+          translateX: '-50%',
+          translateY: '-50%',
+        }}
       >
-        <div style={{
-          width: 5, height: 5,
-          borderRadius: '50%',
-          background: 'var(--accent)',
-        }} />
+        <motion.div
+          animate={{ scale: hovered ? 0 : 1 }}
+          transition={{ duration: 0.15 }}
+          style={{
+            width: 5,
+            height: 5,
+            borderRadius: '50%',
+            background: 'var(--accent)',
+          }}
+        />
       </motion.div>
     </>
   );
