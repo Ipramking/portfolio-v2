@@ -1,0 +1,231 @@
+/* ── FONT IMPORTS ─────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ── DESIGN TOKENS — DARK (default) ──────────────────────────── */
+:root,
+[data-theme='dark'] {
+  --bg:           #04040a;
+  --bg-2:         #080812;
+  --surface:      #0c0c18;
+  --surface-2:    #10101e;
+  --border:       #1a1a2e;
+  --border-2:     #222238;
+
+  --accent:       #818cf8;   /* indigo-400  */
+  --accent-dim:   #6366f1;   /* indigo-500  */
+  --accent2:      #c084fc;   /* purple-400  */
+  --accent3:      #f472b6;   /* pink-400    */
+  --accent-glow:  rgba(99,102,241,0.25);
+
+  --text:         #e8e8f4;
+  --text-2:       #a0a0c0;
+  --muted:        #60607a;
+
+  --glass-bg:     rgba(12, 12, 24, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.06);
+
+  --shadow-sm:    0 1px 3px rgba(0,0,0,0.5);
+  --shadow-md:    0 4px 20px rgba(0,0,0,0.4);
+  --shadow-lg:    0 12px 48px rgba(0,0,0,0.6);
+  --shadow-glow:  0 0 40px rgba(99,102,241,0.15);
+}
+
+/* ── DESIGN TOKENS — LIGHT ────────────────────────────────────── */
+[data-theme='light'] {
+  --bg:           #fafafa;
+  --bg-2:         #f4f4f8;
+  --surface:      #ffffff;
+  --surface-2:    #f0f0f8;
+  --border:       #e2e2ee;
+  --border-2:     #d4d4e8;
+
+  --accent:       #6366f1;
+  --accent-dim:   #4f52e8;
+  --accent2:      #a855f7;
+  --accent3:      #ec4899;
+  --accent-glow:  rgba(99,102,241,0.15);
+
+  --text:         #0f0f1e;
+  --text-2:       #3a3a5c;
+  --muted:        #8080a0;
+
+  --glass-bg:     rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(0, 0, 0, 0.06);
+
+  --shadow-sm:    0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md:    0 4px 20px rgba(0,0,0,0.1);
+  --shadow-lg:    0 12px 48px rgba(0,0,0,0.15);
+  --shadow-glow:  0 0 40px rgba(99,102,241,0.1);
+}
+
+/* ── RESET ────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+img   { display: block; max-width: 100%; }
+a     { text-decoration: none; color: inherit; }
+ul    { list-style: none; }
+button { font-family: inherit; }
+
+/* ── TYPOGRAPHY ───────────────────────────────────────────────── */
+.font-head { font-family: 'Syne', sans-serif; }
+.font-mono { font-family: 'JetBrains Mono', monospace; }
+
+/* ── LAYOUT ───────────────────────────────────────────────────── */
+.container {
+  width: 100%;
+  max-width: 1120px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+.section { padding-block: 7rem; }
+
+/* ── GLASS CARD ───────────────────────────────────────────────── */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+}
+
+/* ── GRADIENT TEXT ────────────────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 50%, var(--accent3) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── SECTION LABEL ────────────────────────────────────────────── */
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+  display: block;
+}
+
+/* ── SECTION TITLE ────────────────────────────────────────────── */
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+/* ── TAG ──────────────────────────────────────────────────────── */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.65rem;
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--accent);
+}
+
+/* ── BUTTONS ──────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: 12px;
+  font-family: 'Syne', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1.5px solid transparent;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: -0.01em;
+}
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.btn:hover::before { opacity: 1; }
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-dim), var(--accent2));
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 0 20px rgba(99,102,241,0.3);
+}
+.btn-primary:hover {
+  box-shadow: 0 0 32px rgba(99,102,241,0.5);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border-2);
+}
+.btn-outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-2);
+  border-color: transparent;
+  padding: 0.6rem 1rem;
+}
+.btn-ghost:hover { color: var(--accent); }
+
+/* ── SCROLLBAR ────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-dim); }
+
+/* ── SELECTION ────────────────────────────────────────────────── */
+::selection { background: rgba(99,102,241,0.3); color: var(--text); }
+
+/* ── NOISE TEXTURE ────────────────────────────────────────────── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── MOBILE NAV OPEN LOCK ─────────────────────────────────────── */
+body.nav-open { overflow: hidden; }
+
+/* ── REDUCED MOTION ───────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
