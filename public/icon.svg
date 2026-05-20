@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="80" fill="#04040a"/>
+  <!-- Gradient defs -->
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#6366f1"/>
+      <stop offset="50%"  stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+  </defs>
+  <!-- Code brackets < / > -->
+  <text x="256" y="320" font-family="monospace" font-size="220" font-weight="700"
+        text-anchor="middle" fill="url(#g)">&lt;/&gt;</text>
+</svg>
