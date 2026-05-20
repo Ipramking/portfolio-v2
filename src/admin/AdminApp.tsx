@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { LS, DEFAULT_ADMIN_HASH } from '../data/defaults';
+import { publishToGitHub } from './publish';
 import '../styles/admin.css';
 import ProfileTab     from './tabs/ProfileTab';
 import SkillsTab      from './tabs/SkillsTab';
@@ -76,11 +77,26 @@ function Login({ onLogin }: { onLogin: () => void }) {
 }
 
 export default function AdminApp() {
-  const [authed, setAuthed] = useState(() => sessionStorage.getItem(LS.session) === '1');
-  const [tab,    setTab]    = useState('profile');
+  const [authed,    setAuthed]    = useState(() => sessionStorage.getItem(LS.session) === '1');
+  const [tab,       setTab]       = useState('profile');
+  const [publishing, setPublishing] = useState(false);
+  const [pubStatus,  setPubStatus]  = useState<{ ok: boolean; msg: string } | null>(null);
 
   const login  = () => { sessionStorage.setItem(LS.session,'1'); setAuthed(true); };
   const logout = () => { sessionStorage.removeItem(LS.session); setAuthed(false); };
+
+  const handlePublish = async () => {
+    setPublishing(true);
+    setPubStatus(null);
+    const result = await publishToGitHub();
+    setPublishing(false);
+    if (result.ok) {
+      setPubStatus({ ok: true,  msg: '✓ Published! Vercel is deploying (~30s).' });
+    } else {
+      setPubStatus({ ok: false, msg: `✕ ${result.error}` });
+    }
+    setTimeout(() => setPubStatus(null), 6000);
+  };
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme','dark');
@@ -119,6 +135,67 @@ export default function AdminApp() {
 
       {/* Main */}
       <main className="adm-main">
+        {/* Publish bar */}
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '0.85rem 1.25rem', marginBottom: '1.5rem',
+          background: 'var(--surface)', border: '1px solid var(--border)',
+          borderRadius: 14, gap: '1rem', flexWrap: 'wrap',
+        }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
+            <span style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '0.88rem' }}>
+              Publish to Site
+            </span>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '0.7rem', color: 'var(--muted)' }}>
+              Saves all changes to GitHub → auto-deploys to Vercel (~30s)
+            </span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            {pubStatus && (
+              <motion.span
+                initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }}
+                style={{
+                  fontFamily: 'JetBrains Mono, monospace', fontSize: '0.75rem',
+                  color: pubStatus.ok ? '#4ade80' : '#f87171',
+                }}
+              >
+                {pubStatus.msg}
+              </motion.span>
+            )}
+            <motion.button
+              whileTap={{ scale: 0.96 }}
+              onClick={handlePublish}
+              disabled={publishing}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '0.5rem',
+                padding: '0.6rem 1.25rem', borderRadius: 10,
+                background: 'linear-gradient(135deg, var(--accent-dim), var(--accent2))',
+                color: 'white', border: 'none', cursor: publishing ? 'not-allowed' : 'pointer',
+                fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '0.85rem',
+                opacity: publishing ? 0.7 : 1,
+                boxShadow: '0 0 20px rgba(99,102,241,0.3)',
+              }}
+            >
+              {publishing ? (
+                <>
+                  <motion.span
+                    animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                    style={{ display: 'block', width: 13, height: 13, border: '2px solid rgba(255,255,255,0.3)', borderTopColor: 'white', borderRadius: '50%' }}
+                  />
+                  Publishing…
+                </>
+              ) : (
+                <>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/>
+                  </svg>
+                  Publish
+                </>
+              )}
+            </motion.button>
+          </div>
+        </div>
+
         <AnimatePresence mode="wait">
           <motion.div key={tab}
             initial={{ opacity:0, x:16 }}

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { LS, DEFAULT_PROFILE, DEFAULT_SKILLS, DEFAULT_EXPERIENCE, DEFAULT_PROJECTS, DEFAULT_BUILDING, DEFAULT_BLOG, DEFAULT_TESTIMONIALS, DEFAULT_SOCIALS, DEFAULT_EMAILJS } from '../../data/defaults';
+import { GH_TOKEN_KEY, GH_OWNER_KEY, GH_REPO_KEY } from '../publish';
 
 async function sha256(str: string) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
@@ -10,6 +11,19 @@ export default function SecurityTab() {
   const [np, setNp] = useState('');
   const [cp, setCp] = useState('');
   const [msg, setMsg] = useState({text:'',err:false});
+
+  const [ghToken, setGhToken] = useState(() => localStorage.getItem(GH_TOKEN_KEY) || '');
+  const [ghOwner, setGhOwner] = useState(() => localStorage.getItem(GH_OWNER_KEY) || 'Ipramking');
+  const [ghRepo,  setGhRepo]  = useState(() => localStorage.getItem(GH_REPO_KEY)  || 'portfolio-v2');
+  const [ghSaved, setGhSaved] = useState(false);
+
+  const saveGh = () => {
+    localStorage.setItem(GH_TOKEN_KEY, ghToken.trim());
+    localStorage.setItem(GH_OWNER_KEY, ghOwner.trim());
+    localStorage.setItem(GH_REPO_KEY,  ghRepo.trim());
+    setGhSaved(true);
+    setTimeout(() => setGhSaved(false), 2400);
+  };
   const toast = (text:string,err=false) => { setMsg({text,err}); setTimeout(()=>setMsg({text:'',err:false}),3000); };
 
   const changePass = async () => {
@@ -77,6 +91,30 @@ export default function SecurityTab() {
       </div>
       <button className="adm-btn adm-btn-primary" onClick={changePass}>Update Password</button>
       {msg.text && <span className={`adm-toast${msg.err?' err':''}`} style={{display:'block',marginTop:'0.75rem'}}>{msg.text}</span>}
+
+      <hr style={{border:'none',borderTop:'1px solid var(--border)',margin:'2.5rem 0'}} />
+
+      <h3 style={{fontFamily:'Syne,sans-serif',fontWeight:700,fontSize:'1rem',marginBottom:'0.5rem',color:'var(--text-2)'}}>GitHub Publish Settings</h3>
+      <p style={{fontFamily:'JetBrains Mono,monospace',fontSize:'0.73rem',color:'var(--muted)',marginBottom:'1.25rem',lineHeight:1.7}}>
+        The "Publish" button at the top of every page uses these to push <code style={{background:'var(--surface-2)',padding:'0.1rem 0.4rem',borderRadius:4,fontSize:'0.72rem'}}>public/content.json</code> to GitHub, which triggers a Vercel redeploy so all visitors see your changes.<br/>
+        Get a token at <a href="https://github.com/settings/tokens/new" target="_blank" rel="noopener noreferrer" style={{color:'var(--accent)'}}>github.com/settings/tokens</a> — needs <strong>repo</strong> scope.
+      </p>
+      <div className="adm-grid" style={{marginBottom:'1rem'}}>
+        <div className="adm-field-group full">
+          <label className="adm-label">GitHub Personal Access Token</label>
+          <input className="adm-input" type="password" value={ghToken} onChange={e=>setGhToken(e.target.value)} placeholder="ghp_…" />
+        </div>
+        <div className="adm-field-group">
+          <label className="adm-label">GitHub Username / Org</label>
+          <input className="adm-input" value={ghOwner} onChange={e=>setGhOwner(e.target.value)} placeholder="Ipramking" />
+        </div>
+        <div className="adm-field-group">
+          <label className="adm-label">Repository Name</label>
+          <input className="adm-input" value={ghRepo} onChange={e=>setGhRepo(e.target.value)} placeholder="portfolio-v2" />
+        </div>
+      </div>
+      <button className="adm-btn adm-btn-primary" onClick={saveGh}>Save GitHub Settings</button>
+      {ghSaved && <span className="adm-toast" style={{display:'block',marginTop:'0.75rem'}}>✓ Saved</span>}
 
       <hr style={{border:'none',borderTop:'1px solid var(--border)',margin:'2.5rem 0'}} />
       <h3 style={{fontFamily:'Syne,sans-serif',fontWeight:700,fontSize:'1rem',marginBottom:'0.75rem',color:'var(--text-2)'}}>Data Management</h3>

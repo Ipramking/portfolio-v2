@@ -1,0 +1,90 @@
+{
+  "_timestamp": 0,
+  "pf_profile": {
+    "name": "Your Name",
+    "role": "Full-Stack Developer",
+    "tagline": "I build things for the web — clean, fast, and purposeful.",
+    "bio1": "I'm a passionate developer based in [Your City]. I love turning complex problems into simple, beautiful, and intuitive solutions.",
+    "bio2": "I care deeply about clean architecture, performance, and shipping things that actually work.",
+    "h1": "[Your University / Bootcamp]",
+    "h2": "[Your current role or status]",
+    "h3": "Open to opportunities",
+    "email": "230404097@live.unilag.edu.ng",
+    "githubUsername": "Ipramking",
+    "resumeUrl": ""
+  },
+  "pf_skills": [
+    {
+      "category": "Languages",
+      "items": [
+        { "name": "JavaScript", "icon": "devicon-javascript-plain colored" },
+        { "name": "TypeScript", "icon": "devicon-typescript-plain colored" },
+        { "name": "Python",     "icon": "devicon-python-plain colored" },
+        { "name": "HTML5",      "icon": "devicon-html5-plain colored" },
+        { "name": "CSS3",       "icon": "devicon-css3-plain colored" }
+      ]
+    },
+    {
+      "category": "Frameworks",
+      "items": [
+        { "name": "React",   "icon": "devicon-react-original colored" },
+        { "name": "Next.js", "icon": "devicon-nextjs-plain" },
+        { "name": "Node.js", "icon": "devicon-nodejs-plain colored" },
+        { "name": "Express", "icon": "devicon-express-original" }
+      ]
+    },
+    {
+      "category": "Tools",
+      "items": [
+        { "name": "Git",        "icon": "devicon-git-plain colored" },
+        { "name": "Docker",     "icon": "devicon-docker-plain colored" },
+        { "name": "PostgreSQL", "icon": "devicon-postgresql-plain colored" },
+        { "name": "VS Code",    "icon": "devicon-vscode-plain colored" }
+      ]
+    }
+  ],
+  "pf_experience": [
+    {
+      "id": 1,
+      "role": "Frontend Developer",
+      "company": "Your Company",
+      "location": "Lagos, Nigeria",
+      "start": "2024-01",
+      "end": "",
+      "current": true,
+      "description": "Describe what you did, what you built, the impact you had.",
+      "tags": ["React", "TypeScript", "Node.js"]
+    }
+  ],
+  "pf_projects": [
+    {
+      "id": 1,
+      "title": "Project One",
+      "description": "A short description of what this project does.",
+      "tags": ["React", "Node.js", "MongoDB"],
+      "github": "https://github.com/Ipramking",
+      "live": "",
+      "featured": true
+    }
+  ],
+  "pf_building": {
+    "show": true,
+    "title": "Portfolio v2",
+    "description": "Rebuilding my personal portfolio with React, TypeScript and Framer Motion.",
+    "status": "In Progress",
+    "tags": ["React", "TypeScript", "Framer Motion"],
+    "link": "https://github.com/Ipramking/portfolio-v2"
+  },
+  "pf_blog": [],
+  "pf_testimonials": [],
+  "pf_socials": [
+    { "name": "GitHub",    "url": "https://github.com/Ipramking" },
+    { "name": "LinkedIn",  "url": "https://linkedin.com/in/yourusername" },
+    { "name": "Twitter / X", "url": "https://twitter.com/yourusername" }
+  ],
+  "pf_emailjs": {
+    "serviceId": "",
+    "templateId": "",
+    "publicKey": ""
+  }
+}
